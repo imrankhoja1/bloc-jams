@@ -39,6 +39,12 @@
       margin-right: 65px;
     }
 
+    .previous, .next, .play-pause {
+      &:hover {
+        opacity: 0.5;
+      }
+    }
+
     .previous, .next {
       transition: all 1000ms ease;
     }
@@ -157,9 +163,4 @@
     margin-top: -10px;
     margin-left: -10px;  
   }
-}
-
-  
-.previous:hover, .next:hover, .play-pause:hover {
-  opacity: 0.5;
 }
