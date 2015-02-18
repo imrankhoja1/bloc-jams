@@ -280,7 +280,24 @@ var setupSeekBars = function () {
 // require("./album");
 // require("./profile");
 
-angular.module('BlocJams', []).controller('Landing.controller', ['$scope', function($scope) {
+blocJams = angular.module('BlocJams', ['ui.router']);
+blocJams.config(['$stateProvider', '$locationProvider', function($stateProvider, $locationProvider) {
+  // this just means we want our states to match plain routes (read single page arch checkpoint) and not have routes prefixed with /#!/
+  $locationProvider.html5Mode(true);
+
+  $stateProvider.state('landing', {
+    url: '/',
+    controller: 'Landing.controller',
+    templateUrl: '/templates/landing.html'
+  });
+
+  $stateProvider.state('song', {
+    url: '/song',
+    templateUrl: '/templates/song.html'
+  });
+}]);
+
+blocJams.controller('Landing.controller', ['$scope', function($scope) {
   $scope.title = "Bloc Jams";
   $scope.subText = "Turn the music up!";
 
