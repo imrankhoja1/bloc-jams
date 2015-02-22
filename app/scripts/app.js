@@ -47,9 +47,10 @@ blocJams.config(['$stateProvider', '$locationProvider', function($stateProvider,
   });
 }]);
 
-blocJams.controller('Landing.controller', ['$scope', function($scope) {
+blocJams.controller('Landing.controller', ['$scope', 'ConsoleLogger', function($scope, ConsoleLogger) {
   $scope.title = "Bloc Jams";
   $scope.subText = "Turn the music up!";
+  ConsoleLogger.setMsg($scope.input); 
 
   function shuffle(o){ //v1.0
     for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
@@ -79,11 +80,12 @@ blocJams.controller('Landing.controller', ['$scope', function($scope) {
   $scope.albumURLs = albumURLs;
 }]);
 
-blocJams.controller('Collection.controller', ['$scope', function($scope) {
+blocJams.controller('Collection.controller', ['$scope', 'ConsoleLogger', function($scope, ConsoleLogger) {
   $scope.albums = [];
   for (var i = 0; i < 33; i++) {
     $scope.albums.push(angular.copy(albumPicasso));
   }
+  ConsoleLogger.log();
 }]);
 
 blocJams.controller('Album.controller', ['$scope', 'SongPlayer', function($scope, SongPlayer) {
@@ -121,8 +123,9 @@ blocJams.controller('Album.controller', ['$scope', 'SongPlayer', function($scope
 
 // this gives the player bar controller access to the SongPlayer object (service) 
 // by including it in the controller definition
-blocJams.controller('PlayerBar.controller', ['$scope', 'SongPlayer', function($scope, SongPlayer) {
+blocJams.controller('PlayerBar.controller', ['$scope', 'SongPlayer', 'ConsoleLogger', function($scope, SongPlayer, ConsoleLogger) {
   $scope.songPlayer = SongPlayer;
+  ConsoleLogger.log();
 }]);
 
 blocJams.service('SongPlayer', function() {
@@ -143,3 +146,16 @@ blocJams.service('SongPlayer', function() {
     }
   };
 });
+
+blocJams.service('ConsoleLogger', function() {
+  return {
+    message: null,
+
+    log: function() {
+    console.log(message);
+    },
+    setMsg: function(input) {
+      this.message = input;
+    }
+  };
+})
