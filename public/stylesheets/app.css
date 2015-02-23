@@ -79,12 +79,13 @@
   .selling-points .point {
     width: 32%;
     float: left;
-    padding: 0 0.5% h5;
-    padding-font-size: 24px;
-    padding-font-weight: bold;
-    padding-margin-bottom: 20px;
-    padding-text-align: center;
-    padding-height: 85px; }
+    padding: 0 0.5%; }
+    .selling-points .point h5 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-align: center;
+      height: 85px; }
     .selling-points .point p {
       font-size: 14px; }
 
@@ -315,6 +316,9 @@ body.landing .navbar {
 /* medium-purple: #7B46A3 - 123, 70, 163 */
 .player-header-nav {
   background-color: rgba(123, 70, 163, 0.9); }
+
+.odd {
+  background-color: orange; }
 
 
 /*# sourceMappingURL=app.css.map*/
