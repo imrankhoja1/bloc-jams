@@ -50,7 +50,11 @@ blocJams.config(['$stateProvider', '$locationProvider', function($stateProvider,
 blocJams.controller('Landing.controller', ['$scope', 'ConsoleLogger', function($scope, ConsoleLogger) {
   $scope.title = "Bloc Jams";
   $scope.subText = "Turn the music up!";
-  ConsoleLogger.setMsg($scope.input); 
+
+  // $scope.text - input
+  // $.watch()
+  // when $scope.text value changes, we want to call ConsoleLogger.setMessage($scope.text);
+  $scope.watch(ConsoleLogger.setMsg($scope.text)); 
 
   function shuffle(o){ //v1.0
     for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
@@ -152,10 +156,10 @@ blocJams.service('ConsoleLogger', function() {
     message: null,
 
     log: function() {
-    console.log(message);
+      console.log(message);
     },
-    setMsg: function(input) {
-      this.message = input;
+    setMsg: function(message) {
+      this.message = message;
     }
   };
 })
