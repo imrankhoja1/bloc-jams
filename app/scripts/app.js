@@ -180,3 +180,12 @@ blocJams.service('SongPlayer', function() {
     }
   };
 });
+
+// define what you call the directive as the first arg, then pass in the function of what you want it to do
+blocJams.directive('slider', function() {
+  return {
+    templateUrl: '/templates/directives/slider.html',
+    replace: true,
+    restrict: 'E'
+  };
+})
