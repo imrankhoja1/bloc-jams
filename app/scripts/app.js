@@ -226,3 +226,24 @@ blocJams.directive('slider', function() {
     }
   };
 })
+
+blocJams.directive('clickMe', function() {
+  return {
+    templateUrl: '/templates/directives/clickme.html',
+    restrict: 'E',
+    link: function(scope, element) {
+      $(element).click(function() {
+        alert("This element has been clicked!");
+      });
+    }
+  }
+});
+
+blocJams.directive('classify', function() {
+  return {
+    restrict: "EAC",
+    template: "<p>This is my classify directive</p>",
+    link: function(scope, element) {
+    };
+  }
+})
