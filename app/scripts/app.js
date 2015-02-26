@@ -183,9 +183,46 @@ blocJams.service('SongPlayer', function() {
 
 // define what you call the directive as the first arg, then pass in the function of what you want it to do
 blocJams.directive('slider', function() {
+  
+  var updateSeekPercentage = function($seekBar, event) {
+  var barWidth = $seekBar.width();
+  var offsetX = event.pageX - $seekBar.offset().left; // get mouse offset here
+
+  var offsetXPercent = (offsetX / barWidth ) * 100;
+  offsetXPercent = Math.max(0, offsetXPercent);
+  offsetXPercent = Math.min(110, offsetXPercent);
+
+  var percentageString = offsetXPercent + '%';
+  $seekBar.find('.fill').width(percentageString);
+  $seekBar.find('.thumb').css({left: percentageString});
+}
+
   return {
     templateUrl: '/templates/directives/slider.html',
     replace: true,
-    restrict: 'E'
+    restrict: 'E',
+    link: function(scope, element, attributes) {
+
+      var $seekBar = $(element);
+
+      $seekBar.click(function(event) {
+        updateSeekPercentage($seekBar, event);
+      })
+
+      $seekBar.find('.thumb').mousedown(function(event) {
+        $seekBar.addClass('no-animate');
+
+        $(document).bind('mousemove.thumb', function(event) {
+          updateSeekPercentage($seekBar, event);
+        });
+
+        // cleanup
+        $(document).bind('mouseup.thumb', function(){
+          $seekBar.removeClass('no-animate');
+          $(document).unbind('mousemove.thumb');
+          $(document).unbind('mouseup.thumb');
+        });
+      });
+    }
   };
 })
