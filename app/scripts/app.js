@@ -239,6 +239,13 @@ blocJams.directive('clickMe', function() {
   }
 });
 
+blocJams.directive('countHoverTime', function() {
+  return {
+    restrict: 'A',
+    $(element).bind('mousedown'.)
+  }
+})
+
 blocJams.directive('classify', function() {
   return {
     restrict: "EAC",
