@@ -403,9 +403,15 @@ blocJams.controller('Album.controller', ['$scope', 'SongPlayer', function($scope
 // by including it in the controller definition
 blocJams.controller('PlayerBar.controller', ['$scope', 'SongPlayer', function($scope, SongPlayer) {
   $scope.songPlayer = SongPlayer;
+
+  SongPlayer.onTimeUpdate(function(event, time) {
+    $scope.$apply(function() {
+      $scope.playTime = time;
+    });
+  });
 }]);
 
-blocJams.service('SongPlayer', function() {
+blocJams.service('SongPlayer', function($rootScope) {
   var currentSoundFile = null;
   var trackIndex = function(album, song) {
     return album.songs.indexOf(song);
@@ -429,15 +435,23 @@ blocJams.service('SongPlayer', function() {
         currentSoundFile.setTime(time);
       }
     },
+    onTimeUpdate: function(callback) {
+      return $rootScope.$on('sound:timeupdate', callback);
+    },
     setSong: function(album, song) {
       if(currentSoundFile) {
         currentSoundFile.stop();
       }
       this.currentSong = song;
       this.currentAlbum = album;
+      
       currentSoundFile = new buzz.sound(song.audioUrl, {
         formats: ["mp3"],
         preload: true
+      });
+
+      currentSoundFile.bind('timeupdate', function(e){
+        $rootScope.$broadcast('sound:timeupdate', this.getTime());
       });
 
       this.play();
@@ -554,6 +568,31 @@ blocJams.directive('slider', ['$document', function($document) {
   }
 }])
 
+blocJams.filter('timecode', function(){
+  return function(seconds) {
+    var seconds = Number.parseFloat(seconds);
+
+    // returned when no time is provided
+    if (Number.isNaN(seconds)) {
+      return '-:--';
+    }
+
+    // make it a whole number
+    var wholeSeconds = Math.floor(seconds);
+    var minutes = Math.floor(wholeSeconds / 60);
+    var remainingSeconds = wholeSeconds % 60;
+    
+    var output = minutes + ':';
+
+    // zero pad seconds, so 9 secs should be :09
+    if (remainingSeconds < 10) {
+      output += '0';
+    }
+
+    output += remainingSeconds;
+    return output;
+  }
+})
 });
 
 ;require.register("scripts/collection", function(exports, require, module) {
